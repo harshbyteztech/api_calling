@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import 'otp.dart';
+
 class Loginscreen extends StatefulWidget {
   @override
   _LoginscreenState createState() => _LoginscreenState();
@@ -8,6 +11,18 @@ class Loginscreen extends StatefulWidget {
 
 class _LoginscreenState extends State<Loginscreen> {
   TextEditingController _controller = TextEditingController();
+
+  Future<UserCredential> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +59,12 @@ class _LoginscreenState extends State<Loginscreen> {
               ),
             )
           ]),
-          Center(child: InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => OTPScreen(_controller.text)));
-            },
+          Center(
+              child: InkWell(
+            onTap: () => signInWithFacebook(),
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => OTPScreen(_controller.text)));
+            // },
             child: Container(
               height: 40,
               width: 200,
@@ -56,10 +72,12 @@ class _LoginscreenState extends State<Loginscreen> {
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   color: Colors.blueGrey),
-              child: Center(child: const Text('Login with facebook',
-                  style: TextStyle(fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold))),
+              child: Center(
+                  child: const Text('Login with facebook',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold))),
             ),
           )),
         ],
