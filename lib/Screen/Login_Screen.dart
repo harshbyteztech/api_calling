@@ -30,27 +30,26 @@ class _LoginScreenState extends State<LoginScreen> {
     name.clear();
     mobile.clear();
   }
-  get_image() async{
-    final img  = await _imagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-     image = File(img!.path);
-    });
-  }
 
-  login(context) async {
-    if (_loginkey.currentState!.validate()) {
-     postdata(FormData.fromMap({
-       'patient_image': await MultipartFile.fromFile(
-     image.path,
-     filename: image,
-     ),
-       'patient_name': name.text,
-       'patient_email':email.text,
-       'patient_mobile': mobile.text
-     }));
-      clean_data();
-    };
-  }
+  // get_image() async{
+  //   final img  = await _imagePicker.pickImage(source: ImageSource.gallery);
+  //   setState(() {
+  //    image = File(img!.path);
+  //   });
+  // }
+
+  // login(context) async {
+  //   if (_loginkey.currentState!.validate()) {
+  //    postdata(FormData.fromMap({
+  //
+  //      'patient_name': name.text,
+  //      'patient_email':email.text,
+  //      'patient_mobile': mobile.text
+  //      // 'patient_image': await MultipartFile
+  //    }));
+  //     clean_data();
+  //   };
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: IconButton(
                         onPressed: () {
-                          get_image();
+                          // get_image();
                         },
                         icon: const Icon(Icons.camera_alt_outlined,size: 30,)),
                   ),
@@ -142,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   button(
                     name: "Login".toUpperCase(),
                     onTap: () {
-                      login(context);
+                      // login(context);
                     },
                   ),
                   const SizedBox(

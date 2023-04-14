@@ -16,9 +16,7 @@ Future<List<Model>?> fetchAlbum() async {
     final model = json.decode(response.body).cast<Map<String, dynamic>>();
     return model.map<Model>((json) => Model.fromJson(json)).toList();
   } else {
-    throw Exception('Failed to load album');
-  }
-}
+    throw Exception('Failed to load album');}}
 
 Future<List<USerData>> Userget() async {
   var dio = Dio();
@@ -26,9 +24,10 @@ Future<List<USerData>> Userget() async {
   if (response.statusCode == 200) {
     return (response.data as List).map((e) => USerData.fromJson(e)).toList();
   } else {
-    throw Exception('Failed to load album');
-  }
-}
+    throw Exception('Failed to load album');}}
+
+
+
 
 Future<Patientdata> postdata(FormData? data) async {
   final dio = Dio();
