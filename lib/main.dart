@@ -2,11 +2,16 @@ import 'package:api_calling/Screen/Login_Screen.dart';
 import 'package:api_calling/Screen/Model_DataGet_By_http.dart';
 import 'package:api_calling/Screen/User_DataGet_By_dio.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'Screen/faceBook_authentication.dart';
 
-void main() {
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 // runApp(
 //     DevicePreview(
@@ -27,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: Loginscreen(),
     );
   }
 }
