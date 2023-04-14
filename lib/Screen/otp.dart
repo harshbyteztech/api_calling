@@ -79,6 +79,9 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   _verifyPhone() async {
+//     mAuth = FirebaseAuth.
+// // set this to remove reCaptcha web
+// mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: '+91${widget.phone}',
         verificationCompleted: (PhoneAuthCredential credential) async {
