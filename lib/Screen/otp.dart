@@ -17,7 +17,47 @@ class _OTPScreenState extends State<OTPScreen> {
   String? _verificationCode;
   final TextEditingController _pinPutController = TextEditingController();
 
+  _verifyPhone() async {
+//     mAuth = FirebaseAuth.
+// // set this to remove reCaptcha web
+// mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: '+91${widget.phone}',
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance
+              .signInWithCredential(credential)
+              .then((value) async {
+            if (value.user != null) {
+              // await FirebaseAuth.instance.ph
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                      (route) => false);
+            }
+          });
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          print(e.message);
+        },
+        codeSent: (String? verficationID, int? resendToken) {
+          setState(() {
+            _verificationCode = verficationID;
+          });
+        },
+        codeAutoRetrievalTimeout: (String verificationID) {
+          setState(() {
+            _verificationCode = verificationID;
+          });
+        },
+        timeout: Duration(seconds: 2));
+  }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _verifyPhone();
+  }
   final defaultPinTheme = PinTheme(
     width: 56,
     height: 56,
@@ -76,47 +116,5 @@ class _OTPScreenState extends State<OTPScreen> {
         ],
       ),
     );
-  }
-
-  _verifyPhone() async {
-//     mAuth = FirebaseAuth.
-// // set this to remove reCaptcha web
-// mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
-    await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: '+91${widget.phone}',
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await FirebaseAuth.instance
-              .signInWithCredential(credential)
-              .then((value) async {
-            if (value.user != null) {
-              // await FirebaseAuth.instance.ph
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                      (route) => false);
-            }
-          });
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          print(e.message);
-        },
-        codeSent: (String? verficationID, int? resendToken) {
-          setState(() {
-            _verificationCode = verficationID;
-          });
-        },
-        codeAutoRetrievalTimeout: (String verificationID) {
-          setState(() {
-            _verificationCode = verificationID;
-          });
-        },
-        timeout: Duration(seconds: 2));
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _verifyPhone();
   }
 }
