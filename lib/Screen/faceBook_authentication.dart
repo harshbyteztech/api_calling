@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-
 import 'otp.dart';
 
 class Loginscreen extends StatefulWidget {
@@ -13,6 +12,10 @@ class _LoginscreenState extends State<Loginscreen> {
   TextEditingController _controller = TextEditingController();
 
   Future<UserCredential> signInWithFacebook() async {
+    print('facebook');
+    // try{
+    //   final result = await FacebookAuth.getInstance();
+    // }
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
     final OAuthCredential facebookAuthCredential =
