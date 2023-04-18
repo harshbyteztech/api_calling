@@ -40,12 +40,16 @@
 //
 //
 import 'dart:convert';
+import 'package:api_calling/Blocs/FormValidationBloc/ValidationBloc.dart';
+import 'package:api_calling/Screen/Login_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-
+import 'Blocs/ConnectivityBloc/IntrenalBloc.dart';
 import 'Screen/User_DataGet_By_dio.dart';
+import 'Screen/faceBook_authentication.dart';
 import 'Screen/pray_Data_get_screen.dart';
 
 void main() {
@@ -69,8 +73,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-    home: User_Data(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => InternalBloc(),),
+        BlocProvider(create: (context) => validationBloc(),),
+      ],
+      child: MaterialApp(
+      home: LoginScreen(),
+      ),
     );
   }
 }

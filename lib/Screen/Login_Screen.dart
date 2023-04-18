@@ -1,9 +1,14 @@
 import 'dart:io';
 
 import 'package:api_calling/Api_Service/Api_Service.dart';
+import 'package:api_calling/Blocs/FormValidationBloc/ValicationEvent.dart';
+import 'package:api_calling/Blocs/FormValidationBloc/ValidationBloc.dart';
+import 'package:api_calling/Blocs/FormValidationBloc/ValidationState.dart';
 import 'package:api_calling/Models/Post_Data_Model.dart';
+import 'package:api_calling/Screen/faceBook_authentication.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Custom_Widget/Button_Widget.dart';
@@ -17,11 +22,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var  email = TextEditingController();
-  var  name = TextEditingController();
-  var  mobile = TextEditingController();
+  var email = TextEditingController();
+  var name = TextEditingController();
+  var mobile = TextEditingController();
 
-  final _loginkey = GlobalKey<FormState>();
+  // final _loginkey = GlobalKey<FormState>();
   late File image;
   ImagePicker _imagePicker = ImagePicker();
 
@@ -54,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _loginkey,
+      // key: _loginkey,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -78,7 +83,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           // get_image();
                         },
-                        icon: const Icon(Icons.camera_alt_outlined,size: 30,)),
+                        icon: const Icon(
+                          Icons.camera_alt_outlined,
+                          size: 30,
+                        )),
                   ),
                   const Center(
                     child: Text(
@@ -90,7 +98,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
+                  ),
+                  BlocBuilder<validationBloc, validationState>(
+                    builder: (context, state) {
+                      if (state is validationErrorState) {
+                        return Text("${state.errorMessage}",
+                            style: TextStyle(color: Colors.red, fontSize: 20));
+                      } else {
+                        return SizedBox();
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Textfield(
                     prefixIcon: Icons.person,
@@ -107,6 +128,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 15,
                   ),
                   Textfield(
+                    onChanged: (value) {
+                      BlocProvider.of<validationBloc>(context).add(
+                          validationFieldEvent(
+                              email: email.text, password: mobile.text));
+                    },
                     prefixIcon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
                     Hindtext: 'Email',
@@ -123,6 +149,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 25,
                   ),
                   Textfield(
+                    onChanged: (val){
+                      BlocProvider.of<validationBloc>(context).add(
+                          validationFieldEvent(
+                              email: email.text, password: mobile.text));
+                    },
                     prefixIcon: Icons.call,
                     Hindtext: 'Mobile',
                     keyboardType: TextInputType.number,
@@ -155,16 +186,23 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontFamily: 'poppins',
                               fontSize: MediaQuery.of(context).size.height / 50,
                               color: const Color(0XffA1A1A9))),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 50,
-                                color: const Color(0XffFEA53F),
-                                fontFamily: 'poppins'),
-                          ))
+                      BlocBuilder<validationBloc, validationState>(
+                          builder: (context, state) {
+                        return TextButton(
+                            onPressed: () {
+                              state is validationValidState ?Navigator.push(context, MaterialPageRoute(builder: (context) => Loginscreen(),)):print("Don't navigat you");
+                            },
+                            child: Text(
+                              'Sign up',
+                              style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 50,
+                                  color: state is validationValidState
+                                      ? Color(0XffFEA53F)
+                                      : Colors.red,
+                                  fontFamily: 'poppins'),
+                            ));
+                      })
                     ],
                   ),
                 ],

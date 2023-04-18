@@ -40,7 +40,7 @@ class _Model_DataState extends State<Model_Data> {
       body: _isLoading
           ? Center(child: const CircularProgressIndicator())
           : model!.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text(
                   'No Data',
                   style: TextStyle(
