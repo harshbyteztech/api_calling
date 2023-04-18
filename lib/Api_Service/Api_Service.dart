@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:api_calling/Models/Post_Data_Model.dart';
+import 'package:api_calling/Models/pray_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import '../Models/Model.dart';
 import '../Models/UserData_Model.dart';
 
+
+///this is list of data
 Future<List<Model>?> fetchAlbum() async {
   final response =
       await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
@@ -18,10 +21,13 @@ Future<List<Model>?> fetchAlbum() async {
   } else {
     throw Exception('Failed to load album');}}
 
+
+///this is list of data
 Future<List<USerData>> Userget() async {
   var dio = Dio();
   final response = await dio.get('https://jsonplaceholder.typicode.com/users');
   if (response.statusCode == 200) {
+    print("respons ==> ${response.data}");
     return (response.data as List).map((e) => USerData.fromJson(e)).toList();
   } else {
     throw Exception('Failed to load album');}}
@@ -44,3 +50,15 @@ Future<Patientdata> postdata(FormData? data) async {
  }
 }
 
+
+Future<List<PrayModel>> get_pray_data()async{
+  var dio = Dio();
+  final respons = await dio.get("https://islamenc.in/api/quran/1.json");
+  if(respons.statusCode ==200){
+    print('respons Data ===> ${respons.data}');
+    return (respons.data as List).map((e) => PrayModel.fromJson(e)).toList();
+  }
+  else {
+    throw Exception('Failed to load album');
+  }
+}

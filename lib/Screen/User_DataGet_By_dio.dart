@@ -11,37 +11,80 @@ class User_Data extends StatefulWidget {
 }
 
 class _User_DataState extends State<User_Data> {
+  List<USerData> user = [];
+  List<USerData> user1 = [];
 
-  late Future<List<USerData>> user;
+  GETdata() async {
+    user = await Userget();
+    print("GetData ==> ${user.length}");
+    setState(() {});
+  }
+
+
+  search_data({String? text}){
+    user1.clear();
+    if(text!.isEmpty){
+      setState(() {});
+      return ;
+    }
+    user.forEach((element) {
+      if(element.name.toLowerCase().contains(text.toLowerCase())||
+      element.name.toUpperCase().contains(text.toUpperCase())){
+        user1.add(element);
+      }
+    });
+    setState(() {});
+
+
+  }
 
   @override
   void initState() {
     super.initState();
-    user = Userget();
+    GETdata();
+    print('call ==================================');
   }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Text('Api is Called by dio  ||  ListType '),
+        actions: [
+          Center(
+            child: SizedBox(
+              width: 390,
+              child: TextField(
+                onChanged: (value) {
+                  search_data(text: value);
+                },
+                decoration: InputDecoration(
+                    prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.black,
+                )),
+              ),
+            ),
+          ),
+        ],
+        // title: Text('Api is Called by dio  ||  ListType '),
       ),
       body:
-      // Center()
-      FutureBuilder<List<USerData>>(
-        future: user,
-        builder: (context, snapshot){
-          if(snapshot.hasData){
-            return  ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index){
-                  return ListTile(title: Text(snapshot.data![index].name),
-                      subtitle:  Text(snapshot.data![index].email),
-                      leading: Text('${snapshot.data![index].id}'));
-                });
-          }return Center(child:CircularProgressIndicator(),);
-        },
-      ),
+          // Center()
+        user1.isEmpty?  ListView.builder(
+              itemCount: user.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                    title: Text(user[index].name),
+                    subtitle: Text(user[index].email),
+                    leading: Text('${user[index].id}'));
+              }):ListView.builder(
+            itemCount: user1.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                  title: Text(user1[index].name),
+                  subtitle: Text(user1[index].email),
+                  leading: Text('${user1[index].id}'));
+            }),
     );
   }
 }

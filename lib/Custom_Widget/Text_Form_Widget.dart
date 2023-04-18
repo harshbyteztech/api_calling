@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Textfield extends StatelessWidget {
   Textfield(
-      { this.Hindtext, this.suffix,this.keyboardType,this.prefixIcon,this.obscureText,this.icon, this.controller,this.validator});
+      { this.Hindtext, this.suffix,this.onChanged,this.keyboardType,this.prefixIcon,this.obscureText,this.icon, this.controller,this.validator});
 
 
   late String? Hindtext;
@@ -12,6 +12,7 @@ class Textfield extends StatelessWidget {
   late bool? obscureText,icon;
   late TextInputType? keyboardType;
   late TextEditingController? controller = TextEditingController();
+  ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class Textfield extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText == true ? true: false,
       validator: validator,
+       onChanged:onChanged ,
       style: const TextStyle(
         color: Colors.black,
         fontSize: 20,
