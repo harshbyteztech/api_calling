@@ -23,6 +23,8 @@ class _Model_DataState extends State<Model_Data> {
       _isLoading = true;
     });
     model = await fetchAlbum();
+
+
     setState(() {
       _isLoading = false;
     });

@@ -38,13 +38,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.5
   device_preview: ^1.1.0
-  dio: ^4.0.6
+  dio: ^5.1.1
   get: ^4.6.5
   image_picker: ^0.8.6+1
   flutter_facebook_auth: ^5.0.8
   firebase_auth: ^4.4.1
-  firebase_core:
-  pinput:
+  firebase_core: ^2.9.0
+  pinput: ^2.2.31
+  flutter_html: ^2.2.1
 
 
 dev_dependencies:
