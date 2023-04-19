@@ -9,8 +9,8 @@ class  validationBloc extends Bloc<validationEvent,validationState>{
     on<validationFieldEvent>((event, emit) {
       if( EmailValidator.validate("${event.email}") == false){
         emit(validationErrorState(errorMessage: 'please Enter Valid Email'));
-      }else if(event.password.length < 8){
-        emit(validationErrorState(errorMessage: 'Please Enter Valid Passowrd'));
+      }else if(event.number.length < 10){
+        emit(validationErrorState(errorMessage: 'Please Enter Valid Number'));
       }
       else {
         emit(validationValidState());

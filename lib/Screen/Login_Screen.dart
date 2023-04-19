@@ -6,6 +6,7 @@ import 'package:api_calling/Blocs/FormValidationBloc/ValidationBloc.dart';
 import 'package:api_calling/Blocs/FormValidationBloc/ValidationState.dart';
 import 'package:api_calling/Models/Post_Data_Model.dart';
 import 'package:api_calling/Screen/faceBook_authentication.dart';
+import 'package:api_calling/Screen/otp.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -131,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (value) {
                       BlocProvider.of<validationBloc>(context).add(
                           validationFieldEvent(
-                              email: email.text, password: mobile.text));
+                              email: email.text, number: mobile.text));
                     },
                     prefixIcon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
@@ -149,10 +150,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 25,
                   ),
                   Textfield(
-                    onChanged: (val){
+                    onChanged: (val) {
                       BlocProvider.of<validationBloc>(context).add(
                           validationFieldEvent(
-                              email: email.text, password: mobile.text));
+                              email: email.text, number: mobile.text));
                     },
                     prefixIcon: Icons.call,
                     Hindtext: 'Mobile',
@@ -169,10 +170,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 25,
                   ),
-                  button(
-                    name: "Login".toUpperCase(),
-                    onTap: () {
-                      // login(context);
+                  BlocBuilder<validationBloc, validationState>(
+                    builder: (context, state) {
+                      return button(
+                        Button_color: state is validationValidState
+                            ? Colors.blue.shade200
+                            : Colors.grey,
+                        name: "Login".toUpperCase(),
+                        onTap: () {
+                          state is validationValidState
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        OTPScreen(mobile.text),
+                                  ))
+                              : print("Don't navigat you");
+                        },
+                      );
                     },
                   ),
                   const SizedBox(
@@ -190,7 +205,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           builder: (context, state) {
                         return TextButton(
                             onPressed: () {
-                              state is validationValidState ?Navigator.push(context, MaterialPageRoute(builder: (context) => Loginscreen(),)):print("Don't navigat you");
+                              state is validationValidState
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Loginscreen(),
+                                      ))
+                                  : print("Don't navigat you");
                             },
                             child: Text(
                               'Sign up',

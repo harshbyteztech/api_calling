@@ -40,19 +40,25 @@
 //
 //
 import 'dart:convert';
+import 'package:api_calling/Blocs/CounterBloc/counter_cubit.dart';
 import 'package:api_calling/Blocs/FormValidationBloc/ValidationBloc.dart';
+import 'package:api_calling/Screen/CounterScreen.dart';
 import 'package:api_calling/Screen/Login_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'Blocs/ApiBloc/ApiBloc.dart';
 import 'Blocs/ConnectivityBloc/IntrenalBloc.dart';
 import 'Screen/User_DataGet_By_dio.dart';
 import 'Screen/faceBook_authentication.dart';
 import 'Screen/pray_Data_get_screen.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -77,6 +83,8 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(create: (context) => InternalBloc(),),
         BlocProvider(create: (context) => validationBloc(),),
+        BlocProvider(create: (context) => CounterCubit1(),),
+        BlocProvider(create: (context) => ApiBloc(),),
       ],
       child: MaterialApp(
       home: LoginScreen(),

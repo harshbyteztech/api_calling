@@ -1,13 +1,18 @@
+import 'package:api_calling/Blocs/ApiBloc/ApiBloc.dart';
 import 'package:api_calling/Screen/faceBook_authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 
 import 'Login_Screen.dart';
+import 'Model_DataGet_By_http.dart';
 
 class OTPScreen extends StatefulWidget {
   final String phone;
+
   OTPScreen(this.phone);
+
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
@@ -58,15 +63,19 @@ class _OTPScreenState extends State<OTPScreen> {
     super.initState();
     _verifyPhone();
   }
+
   final defaultPinTheme = PinTheme(
     width: 56,
     height: 56,
-    textStyle: TextStyle(fontSize: 20, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
+    textStyle: TextStyle(fontSize: 20,
+        color: Color.fromRGBO(30, 60, 87, 1),
+        fontWeight: FontWeight.w600),
     decoration: BoxDecoration(
       border: Border.all(color: Colors.black),
       borderRadius: BorderRadius.circular(20),
     ),
   );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,12 +112,20 @@ class _OTPScreenState extends State<OTPScreen> {
                     if (value.user != null) {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
-                              (route) => false);
-                    }
+                          MaterialPageRoute(builder: (context) =>
+                              BlocProvider(
+                                create: (context) => ApiBloc(), child:Model_Data(),)
+                        ),(
+                    route
+                    )
+                    =>
+                    false
+                    );
+                  }
                   });
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString())));
                 }
               },
             ),

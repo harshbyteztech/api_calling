@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class button extends StatelessWidget {
-  button({this.name, this.onTap});
+  button({this.name, this.onTap,this.Button_color});
 
   late String? name;
   final GestureTapCallback? onTap;
+  final Color? Button_color;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class button extends StatelessWidget {
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
-          color: Colors.blue.shade200,
+          color: Button_color??Colors.blue.shade200,
         ),
         child: Center(
             child: Text(

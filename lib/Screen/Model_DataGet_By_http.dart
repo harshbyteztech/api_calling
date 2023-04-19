@@ -1,4 +1,7 @@
+import 'package:api_calling/Blocs/ApiBloc/ApiBloc.dart';
+import 'package:api_calling/Blocs/ApiBloc/ApiStateBloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Api_Service/Api_Service.dart';
 import '../Models/Model.dart';
@@ -15,7 +18,8 @@ class _Model_DataState extends State<Model_Data> {
   @override
   void initState() {
     super.initState();
-    _getData();
+    // _getData();
+
   }
 
   void _getData() async {
@@ -37,24 +41,35 @@ class _Model_DataState extends State<Model_Data> {
       appBar: AppBar(
         title: Text('Api is Called by http  ||  ListType '),
       ),
-      body: _isLoading
-          ? Center(child: const CircularProgressIndicator())
-          : model!.isEmpty
-              ? const Center(
-                  child: Text(
-                  'No Data',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ))
-              : ListView.builder(
-                  itemCount: model!.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                        title: Text(model![index].title),
-                        leading: Text('${model![index].id}'));
-                  }),
+      body:
+      // _isLoading
+      //     ? Center(child: const CircularProgressIndicator())
+      //     : model!.isEmpty
+      //         ? const Center(
+      //             child: Text(
+      //             'No Data',
+      //             style: TextStyle(
+      //                 fontSize: 20,
+      //                 color: Colors.black,
+      //                 fontWeight: FontWeight.bold),
+      //           ))
+      //         :
+     BlocBuilder<ApiBloc,ApiState>(builder: (context, state) {
+       if(state is ApiLoadingState){
+         return Center(child: CircularProgressIndicator(),);
+       }
+       else if(state is ApiLoadedState){
+         return  ListView.builder(
+             itemCount: state.pray_model?.length,
+             itemBuilder: (context, index) {
+               var data = state.pray_model?[index];
+               return ListTile(
+                   title: Text("${data?.ayatNoArabic}"),
+                   leading: Text('${data?.translation}'));
+             });
+       }
+       return Center(child: Text('An error occured!'),);
+     },)
     );
   }
 }
